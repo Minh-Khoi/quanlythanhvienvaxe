@@ -102,9 +102,12 @@ class quantrivienDAO
 
       $stmt->execute();
       $res = $stmt->fetchAll(PDO::FETCH_CLASS, "quantrivien");
+      // $res = $stmt->fetchAll();
+      // var_dump($res);
       return $res[0];
     } catch (PDOException $e) {
       print_r("error is " . $e->getMessage());
     }
+    return null;
   }
 }

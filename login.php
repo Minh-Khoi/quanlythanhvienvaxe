@@ -1,3 +1,16 @@
+<?php
+// KIỂM TRA SESSION
+// Nếu trang này được tải tiếp tục tiến trình session. thiết lập session_id với id của session cũ
+if (isset($_SESSION['ID'])) {
+  session_id($_SESSION['ID']);
+}
+session_start();
+// Nếu trang này được tải bắt đầu lại với session mới. Sử dụng hàm session_regenerate_id()
+if (!isset($_SESSION['ID'])) {
+  session_regenerate_id();
+}
+$_SESSION["ID"] = session_id();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +23,8 @@
 
 <body style="text-align: center">
   <h1> Hệ thống quản lý Group Highland</h1>
-  <form action="index.php">
+  <h6 style="color: red"><?php echo isset($_SESSION["login_error"]) ? $_SESSION["login_error"] : "" ?></h6>
+  <form action="controllers/login_controller.php" method="POST">
     <label for="ten_dang_nhap">Tên đăng nhập</label>
     <input type="text" name="ten_dang_nhap" id="ten_dang_nhap">
     <br>

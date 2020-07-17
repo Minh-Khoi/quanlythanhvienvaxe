@@ -7,8 +7,15 @@ class member
   /**
    * Class constructor for member instance.
    */
-  public function __construct(int $member_id, string $nick_zalo, int $so_diem, string $BKS, string $ghi_chu, int $co_coc, int $co_anh)
-  {
+  public function __construct(
+    int $member_id = -1,
+    string $nick_zalo = "",
+    int $so_diem = null,
+    string $BKS = "",
+    string $ghi_chu = null,
+    int $co_coc = null,
+    int $co_anh = null
+  ) {
     $this->member_id = $member_id;
     $this->$nick_zalo = $nick_zalo;
     $this->so_diem = $so_diem;
