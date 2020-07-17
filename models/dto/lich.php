@@ -15,12 +15,12 @@ class lich
     int $nhom_diem,
     string $ngay_thang
   ) {
-    $this->lich_id = $lich_id;
-    $this->chulich_id = $chulich_id;
-    $this->laixe_id = $laixe_id;
-    $this->noidung_lich = $noidung_lich;
-    $this->nhom_diem = $nhom_diem;
-    $this->ngay_thang = $ngay_thang;
+    $this->lich_id = (isset($lich_id)) ?  $lich_id : $this->lich_id;
+    $this->chulich_id = (isset($chulich_id)) ?  $chulich_id : $this->chulich_id;
+    $this->laixe_id = (isset($laixe_id)) ?  $laixe_id : $this->laixe_id;
+    $this->noidung_lich = (isset($noidung_lich)) ?  $noidung_lich : $this->noidung_lich;
+    $this->nhom_diem = (isset($nhom_diem)) ?  $nhom_diem : $this->nhom_diem;
+    $this->ngay_thang = (isset($ngay_thang)) ?  $ngay_thang : $this->ngay_thang;
   }
 
 

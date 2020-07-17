@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . "/models/dto/quantrivien.php";
 if (isset($_SESSION['ID'])) {
   session_id($_SESSION['ID']);
 }
+session_set_cookie_params(3600, "/");
 session_start();
 // Nếu trang này được tải bắt đầu lại với session mới. Sử dụng hàm session_regenerate_id()
 if (!isset($_SESSION['ID'])) {
@@ -38,6 +39,8 @@ if (!isset($_SESSION["is_quantrivien"])) {
         <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
+        <th>Lorem, ipsum dolor.</th>
+        <th>Lorem, ipsum dolor.</th>
       </tr>
     </thead>
     <tbody>
@@ -45,6 +48,8 @@ if (!isset($_SESSION["is_quantrivien"])) {
       foreach ($_SESSION["list_quantrivien"] as $index => $quantrivien) {
         echo "<tr>";
         echo "<td>" . $quantrivien->quantrivien_id . "</td>";
+        echo "<td>" . $quantrivien->ho_ten . "</td>";
+        echo "<td>" . $quantrivien->sdt . "</td>";
         echo "<td>" . $quantrivien->nick_zalo . "</td>";
         echo "<td>" . $quantrivien->loai_key . "</td>";
         echo "</tr>";
@@ -52,7 +57,18 @@ if (!isset($_SESSION["is_quantrivien"])) {
       ?>
     </tbody>
   </table>
-
+  <form action="" method="post">
+    Quản lý xe và thành viên
+    <input type="submit" value="GO">
+  </form>
+  <form action="" method="post">
+    Quản lý Kích (Khóa)
+    <input type="submit" value="GO">
+  </form>
+  <form action="" method="post">
+    Quản lý điểm và phân vùng kế toán
+    <input type="submit" value="GO">
+  </form>
 </body>
 <script>
 function logout() {
