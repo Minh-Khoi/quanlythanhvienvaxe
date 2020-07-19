@@ -1,6 +1,8 @@
 <?php
-// KIỂM TRA SESSION
-// Nếu trang này được tải tiếp tục tiến trình session. thiết lập session_id với id của session cũ
+
+/** LÀM CÁC BƯỚC NÀY ĐỐI VỚI CÁC FILE ĐƯỢC GỌI BẰNG API */
+// BƯỚC 1: KIỂM TRA SESSION
+// Nếu trang này được tải tiếp tục tiến trình session trước đó. thiết lập session_id với id của session cũ
 if (isset($_SESSION['ID'])) {
   session_id($_SESSION['ID']);
 }
@@ -10,7 +12,11 @@ if (!isset($_SESSION['ID'])) {
   session_regenerate_id();
 }
 $_SESSION["ID"] = session_id();
-?>
+// BƯỚC 2: KIỂM TRA ĐĂNG NHẬP: 
+// nếu người dùng ĐÃ đăng nhập thì chuyển tới trang index
+if (isset($_SESSION["is_quantrivien"])) {
+  header("Location: index.php");
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 

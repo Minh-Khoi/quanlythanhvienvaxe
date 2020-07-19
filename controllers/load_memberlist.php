@@ -1,4 +1,4 @@
-<?php
+<?
 
 /** LÀM CÁC BƯỚC NÀY ĐỐI VỚI CÁC FILE ĐƯỢC GỌI BẰNG API */
 // BƯỚC 1: KIỂM TRA SESSION
@@ -16,12 +16,10 @@ $_SESSION["ID"] = session_id();
 // nếu người dùng chưa đăng nhập thì chuyển tới trang đăng nhập
 if (!isset($_SESSION["is_quantrivien"])) {
   header("Location: login.php");
+  exit();
 }
 
-require_once dirname(__FILE__, 2) . "/models/action/login_action.php";
+require_once dirname(__FILE__, 2) . "/models/action/action.php";
 
-//This file will be called by the views login.php (by submit login form)
-$nick_zalo = $_POST["ten_dang_nhap"];
-$password = $_POST["password"];
-$login_action = new login_action();
-$login_action->login_accept($nick_zalo, $password);
+$action = new action();
+$action->load_memberlist();

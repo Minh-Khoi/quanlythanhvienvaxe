@@ -1,5 +1,5 @@
-<?php
-require_once dirname(__FILE__) . "/models/dto/quantrivien.php";
+<?
+require_once dirname(__FILE__) . "/models/dto/member.php";
 
 /** LÀM CÁC BƯỚC NÀY ĐỐI VỚI CÁC FILE ĐƯỢC GỌI BẰNG API */
 // BƯỚC 1: KIỂM TRA SESSION
@@ -17,15 +17,16 @@ $_SESSION["ID"] = session_id();
 // nếu người dùng chưa đăng nhập thì chuyển tới trang đăng nhập
 if (!isset($_SESSION["is_quantrivien"])) {
   header("Location: login.php");
-} ?>
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Hệ thống quản lý Group Highland</title>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quản lý Group Highland</title>
 </head>
 
 <body style="text-align: center">
@@ -39,23 +40,31 @@ if (!isset($_SESSION["is_quantrivien"])) {
         <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
+        <th>Lorem, ipsum dolor.</th>
+        <th>Lorem, ipsum.</th>
+        <th>Lorem, </th>
+        <th>Lorem, </th>
       </tr>
     </thead>
     <tbody>
       <?php
-      foreach ($_SESSION["list_quantrivien"] as $index => $quantrivien) {
+      foreach ($_SESSION["list_member"] as $index => $member) {
         echo "<tr>";
-        echo "<td>" . $quantrivien->quantrivien_id . "</td>";
-        echo "<td>" . $quantrivien->ho_ten . "</td>";
-        echo "<td>" . $quantrivien->sdt . "</td>";
-        echo "<td>" . $quantrivien->nick_zalo . "</td>";
-        echo "<td>" . $quantrivien->loai_key . "</td>";
+        echo "<td>" . $member->member_id . "</td>";
+        echo "<td>" . $member->ho_ten . "</td>";
+        echo "<td>" . $member->nick_zalo . "</td>";
+        echo "<td>" . $member->so_diem . "</td>";
+        echo "<td>" . (($member->trang_thai == 1) ? "Bình thường" : "không HĐ") . "</td>";
+        echo "<td>" . $member->BKS . "</td>";
+        echo "<td>" . $member->ghi_chu . "</td>";
+        echo "<td>" . (($member->co_coc == 1) ? "x" : "") . "</td>";
+        echo "<td>" . (($member->co_anh == 1) ? "x" : "") . "</td>";
         echo "</tr>";
       }
       ?>
     </tbody>
   </table>
-  <form action="controllers/load_memberlist.php" method="post">
+  <form action="" method="post">
     <label for="xe_va_thanhvien">Quản lý xe và thành viên</label>
     <input type="submit" value="GO" id="xe_va_thanhvien">
   </form>
@@ -69,13 +78,13 @@ if (!isset($_SESSION["is_quantrivien"])) {
   </form>
 </body>
 <script>
-  function logout() {
-    console.log(window.location.host);
-    fetch('controllers/logout_controller.php')
-      .then(res => {
-        window.location.assign("http://" + window.location.host);
-      })
-  }
+function logout() {
+  console.log(window.location.host);
+  fetch('controllers/logout_controller.php')
+    .then(res => {
+      window.location.assign("http://" + window.location.host);
+    })
+}
 </script>
 
 </html>
