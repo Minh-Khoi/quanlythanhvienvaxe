@@ -32,7 +32,7 @@ class quantrivien
    */
   public static function construct(string $nick_zalo, string $password, string $loai_key)
   {
-    $instance = new quantrivien(0, $nick_zalo, $password, $loai_key);
+    $instance = new quantrivien(0, $ho_ten, $sdt, $nick_zalo, $password, $loai_key);
     return $instance;
   }
 }

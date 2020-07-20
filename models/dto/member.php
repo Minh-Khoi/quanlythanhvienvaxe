@@ -11,6 +11,7 @@ class member
     int $member_id = null,
     string $ho_ten = null,
     string $nick_zalo = null,
+    string $so_dienthoai = null,
     int $so_diem = null,
     int $trang_thai = null,
     string $BKS = null,
@@ -21,6 +22,7 @@ class member
     $this->member_id = ($member_id != null) ? $member_id : $this->member_id;
     $this->$ho_ten = ($ho_ten != null) ? $ho_ten : $this->ho_ten;
     $this->$nick_zalo = ($nick_zalo != null) ? $nick_zalo : $this->nick_zalo;
+    $this->$so_dienthoai = ($so_dienthoai != null) ? $so_dienthoai : $this->so_dienthoai;
     $this->so_diem = (isset($so_diem)) ? $so_diem : $this->so_diem;
     $this->trang_thai = (isset($trang_thai)) ? $trang_thai : $this->trang_thai;
     $this->BKS = (isset($BKS)) ? $BKS : $this->BKS;
@@ -33,14 +35,16 @@ class member
    * Another Class constructor for member instance. (which have no id)
    */
   public static function construct(
+    string $ho_ten,
     string $nick_zalo,
+    string $so_dienthoai,
     int $so_diem,
     string $BKS,
     string $ghi_chu,
     int $co_coc,
     int $co_anh
   ) {
-    $instance = new member(0, $nick_zalo, $so_diem, $BKS, $ghi_chu, $co_coc, $co_anh);
+    $instance = new member(0, $ho_ten, $nick_zalo, $so_dienthoai, $so_diem, $BKS, $ghi_chu, $co_coc, $co_anh);
     return $instance;
   }
 }
