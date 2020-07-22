@@ -67,6 +67,11 @@ if (!isset($_SESSION["is_quantrivien"])) {
 <body style="text-align: center">
   <button onclick="logout()"> LOG OUT </button>
   <h1>Hệ thống quản lý Group Highland</h1>
+  <!-- This button rollback to homepage -->
+  <form action="controllers/rollback_home.php">
+    <input type="submit" value="return to HOME">
+  </form>
+
   <!-- Search fields -->
   <input type="text" id="myInput" onkeyup="searchTable()"
     placeholder="tìm theo tên, biến số xe, nick zalô, tình trạng hoạt động">
@@ -74,7 +79,6 @@ if (!isset($_SESSION["is_quantrivien"])) {
   <table align="center" border="1" id="myTable">
     <thead>
       <tr>
-        <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
         <th>Lorem, ipsum dolor.</th>
@@ -109,7 +113,6 @@ if (!isset($_SESSION["is_quantrivien"])) {
         echo "<td>" . $member->ho_ten . "</td>";
         echo "<td>" . $member->nick_zalo . "</td>";
         echo "<td>" . $member->so_dienthoai . "</td>";
-        echo "<td>" . $member->so_diem . "</td>";
         echo "<td>" . (($member->trang_thai == 1) ? "Bình thường" : "không HĐ") . "</td>";
         echo "<td>" . $member->BKS . "</td>";
         echo "<td>" . get_shortform_of_ghichu($member->ghi_chu) . "</td>";
@@ -124,7 +127,6 @@ if (!isset($_SESSION["is_quantrivien"])) {
                   <div class='modal-content'>
                       <b>Lái xe</b>: $member->ho_ten <br>
                       <b>số điện thoại</b>: $member->so_dienthoai<br>
-                      <b>số điểm</b>: $member->so_diem <br>
                       <b>trạng thái</b>: " . (($member->trang_thai == 1) ? 'Bình thường' : 'không HĐ')  . " <br>
                       <b>ghi chú</b>: $member->ghi_chu <br>
                       <b>Biển số xe</b>: $member->BKS <br>
@@ -176,7 +178,7 @@ function searchTable() {
   }
 }
 
-// Handle the Modal displaying depend on button LOOK UP in each cells of Table
+// Xử lý Modals khi người dùng click vào một row trong bảng
 // Get the modal
 let modals = document.getElementsByClassName("myModal");
 // Get the button that opens the modal
