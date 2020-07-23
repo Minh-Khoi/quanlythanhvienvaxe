@@ -33,7 +33,7 @@ class lich
     string $noidung_lich,
     int $nhom_diem,
     string $ngay_thang
-  ) {
+  ): lich {
     $instance = new lich(0, $chulich_id, $laixe_id, $noidung_lich, $nhom_diem, $ngay_thang);
     return $instance;
   }

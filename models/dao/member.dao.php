@@ -103,7 +103,7 @@ class memberDAO
   /** 
    * read  member from database by nick_zalo
    */
-  public function read_by_zalo(string $nick_zalo)
+  public function read_by_zalo(string $nick_zalo): member
   {
     try {
       $SQL = "select * from chulich_va_laixe where nick_zalo = :nick_zalo";

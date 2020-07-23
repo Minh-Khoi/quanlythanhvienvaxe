@@ -39,12 +39,24 @@ class member
     string $nick_zalo,
     string $so_dienthoai,
     int $so_diem,
+    int $trang_thai,
     string $BKS,
     string $ghi_chu,
     int $co_coc,
     int $co_anh
-  ) {
-    $instance = new member(0, $ho_ten, $nick_zalo, $so_dienthoai, $so_diem, $BKS, $ghi_chu, $co_coc, $co_anh);
+  ): member {
+    $instance = new member(
+      0,
+      $ho_ten,
+      $nick_zalo,
+      $so_dienthoai,
+      $so_diem,
+      $trang_thai,
+      $BKS,
+      $ghi_chu,
+      $co_coc,
+      $co_anh
+    );
     return $instance;
   }
 }

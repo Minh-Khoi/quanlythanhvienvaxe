@@ -93,7 +93,7 @@ class quantrivienDAO
   /** 
    * read quantrivien from database by nick_zalo
    */
-  public function read_by_zalo(string $nick_zalo)
+  public function read_by_zalo(string $nick_zalo): quantrivien
   {
     try {
       $SQL = "select * from quantrivien where nick_zalo = :nick_zalo";

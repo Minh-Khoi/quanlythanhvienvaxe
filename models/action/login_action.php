@@ -25,6 +25,7 @@ class login_action
     $quantrivien = $this->quantrivienDAO->read_by_zalo($nick_zalo);
     if (!is_null($quantrivien) && md5($password) == $quantrivien->password) {
       $_SESSION["is_quantrivien"] = $nick_zalo;
+      $_SESSION["is_quantrivien_key"] = $quantrivien->loai_key;
       $_SESSION["list_quantrivien"] = $this->quantrivienDAO->read_all();
       // echo $_SERVER["HTTP_HOST"];
       header("Location: http://" . $_SERVER["HTTP_HOST"]);

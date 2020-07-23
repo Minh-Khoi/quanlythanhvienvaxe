@@ -30,8 +30,13 @@ class quantrivien
   /** 
    * Another class constructor (without id)
    */
-  public static function construct(string $ho_ten, string  $sdt, string $nick_zalo, string $password, string $loai_key)
-  {
+  public static function construct(
+    string $ho_ten,
+    string  $sdt,
+    string $nick_zalo,
+    string $password,
+    string $loai_key
+  ): quantrivien {
     $instance = new quantrivien(0, $ho_ten, $sdt, $nick_zalo, $password, $loai_key);
     return $instance;
   }

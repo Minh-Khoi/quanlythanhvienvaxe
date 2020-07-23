@@ -96,11 +96,29 @@ class lichDAO
   /** 
    * read lich from database by id
    */
-  public function read_by_id(int $id)
+  public function read_by_id(int $id): lich
   {
     try {
       $SQL = "select * from lich where lich_id = :lich_id";
       $stmt = $this->conn->prepare($SQL);
+      $stmt->bindParam(':lich_id', $id);
+      $stmt->execute();
+      $res = $stmt->fetchAll(PDO::FETCH_CLASS, "lich");
+      return $res[0];
+    } catch (PDOException $e) {
+      print_r("error is " . $e->getMessage());
+    }
+  }
+
+  /** 
+   * read lich from database by noi dung lich
+   */
+  public function read_by_noidung(string $noidung_lich): lich
+  {
+    try {
+      $SQL = "select * from lich where noidung_lich = :noidung_lich";
+      $stmt = $this->conn->prepare($SQL);
+      $stmt->bindParam(':noidung_lich', $noidung_lich);
       $stmt->execute();
       $res = $stmt->fetchAll(PDO::FETCH_CLASS, "lich");
       return $res[0];

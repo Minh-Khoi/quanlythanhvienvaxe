@@ -7,6 +7,7 @@ require_once dirname(__FILE__) . "/models/dto/quantrivien.php";
 if (isset($_SESSION['ID'])) {
   session_id($_SESSION['ID']);
 }
+session_set_cookie_params(3600, "/");
 session_start();
 // Nếu trang này được tải bắt đầu lại với session mới. Sử dụng hàm session_regenerate_id()
 if (!isset($_SESSION['ID'])) {
