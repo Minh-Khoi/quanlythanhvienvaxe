@@ -113,7 +113,7 @@ class lichDAO
   /** 
    * read lich from database by noi dung lich
    */
-  public function read_by_noidung(string $noidung_lich): lich
+  public function read_by_noidung(string $noidung_lich)
   {
     try {
       $SQL = "select * from lich where noidung_lich = :noidung_lich";

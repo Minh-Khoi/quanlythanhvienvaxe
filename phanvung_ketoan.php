@@ -66,18 +66,18 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
     <form class="grid-container-1" id="nhom_diem" method="POST" action="controllers/add_lich.php">
       <label for="noidung_lich">Thêm lịch</label>
       <div style="text-align: justify">
-        <input type="text" name="noidung_lich" id="noidung_lich" placeholder="Nội dung lịch"> <br>
-        <input type="text" name="zalo_chulich" id="zalo_chulich" placeholder="nick zalo chủ lịch">
+        <input type="text" name="noidung_lich" id="noidung_lich" placeholder="Nội dung lịch" required> <br>
+        <input type="text" name="zalo_chulich" id="zalo_chulich" placeholder="nick zalo chủ lịch" required>
       </div>
       <label for="zalo_laixe">Lái xe</label>
       <div style="text-align: justify">
-        <input type="text" name="zalo_laixe" id="zalo_laixe" placeholder="nick zalo lái xe">
+        <input type="text" name="zalo_laixe" id="zalo_laixe" placeholder="nick zalo lái xe" required>
       </div>
       <label for="nhom_diem">Nhóm điểm</label>
       <div style="text-align: justify">
         +-
         <select name="nhom_diem" id="nhom_diem">
-          <option value="0.5">0.5</option>
+          <option value="0.5" selected>0.5</option>
           <option value="1">1</option>
           <option value="1.5">1.5</option>
           <option value="2">2</option>
@@ -90,6 +90,10 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
       </div>
     </form>
     <input type="submit" form="nhom_diem" value="OK">
+    <p>
+      <? echo (isset($_SESSION['chulich_wrong_zalo']) ? $_SESSION['chulich_wrong_zalo'] : "") . "<br>"
+        . (isset($_SESSION['laixe_wrong_zalo']) ? $_SESSION['laixe_wrong_zalo'] : ""); ?>
+    </p>
 
     <!-- Vùng này cho mục Tìm kiếm LỊCH -->
     <form action="" class="grid-container-2" id="timkiem_lich">
@@ -113,7 +117,7 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
       </div>
       <div style="text-align: justify">
         <select name="diem_dieuchinh" id="diem_dieuchinh" style="width: auto">
-          <option value="+0.5">+0.5</option>
+          <option value="+0.5" selected>+0.5</option>
           <option value="+1">+1</option>
           <option value="+1.5">+1.5</option>
           <option value="+2">+2</option>

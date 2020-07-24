@@ -98,12 +98,13 @@ class memberDAO
     } catch (PDOException $e) {
       print_r("error is " . $e->getMessage());
     }
+    return null;
   }
 
   /** 
    * read  member from database by nick_zalo
    */
-  public function read_by_zalo(string $nick_zalo): member
+  public function read_by_zalo(string $nick_zalo)
   {
     try {
       $SQL = "select * from chulich_va_laixe where nick_zalo = :nick_zalo";
@@ -114,6 +115,8 @@ class memberDAO
       return $res[0];
     } catch (PDOException $e) {
       print_r("error is " . $e->getMessage());
+      // return null;
     }
+    return null;
   }
 }
