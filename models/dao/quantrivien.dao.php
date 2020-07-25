@@ -108,6 +108,6 @@ class quantrivienDAO
     } catch (PDOException $e) {
       print_r("error is " . $e->getMessage());
     }
-    return null;
+    return false;
   }
 }

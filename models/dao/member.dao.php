@@ -119,4 +119,23 @@ class memberDAO
     }
     return null;
   }
+
+  /** 
+   * read  member from database by id
+   */
+  public function read_by_id(int $id)
+  {
+    try {
+      $SQL = "select * from chulich_va_laixe where member_id = :member_id";
+      $stmt = $this->conn->prepare($SQL);
+      $stmt->bindParam(":member_id", $id);
+      $stmt->execute();
+      $res = $stmt->fetchAll(PDO::FETCH_CLASS, "member");
+      return $res[0];
+    } catch (PDOException $e) {
+      print_r("error is " . $e->getMessage());
+      // return null;
+    }
+    return false;
+  }
 }

@@ -96,7 +96,7 @@ class lichDAO
   /** 
    * read lich from database by id
    */
-  public function read_by_id(int $id): lich
+  public function read_by_id(int $id)
   {
     try {
       $SQL = "select * from lich where lich_id = :lich_id";
@@ -108,6 +108,7 @@ class lichDAO
     } catch (PDOException $e) {
       print_r("error is " . $e->getMessage());
     }
+    // return false;
   }
 
   /** 
@@ -125,5 +126,6 @@ class lichDAO
     } catch (PDOException $e) {
       print_r("error is " . $e->getMessage());
     }
+    // return false;
   }
 }

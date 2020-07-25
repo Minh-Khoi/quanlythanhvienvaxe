@@ -64,19 +64,19 @@ if (!isset($_SESSION["is_quantrivien"])) {
     <label for="kich">Quản lý Kích (Khóa)</label>
     <input type="submit" value="GO" id="kich">
   </form>
-  <form action="" method="post">
+  <form action="phanvung_ketoan.php" method="post">
     <label for="phanvung_ketoan">Quản lý điểm và phân vùng kế toán</label>
     <input type="submit" value="GO" id="phanvung_ketoan">
   </form>
 </body>
 <script>
-  function logout() {
-    console.log(window.location.host);
-    fetch('controllers/logout_controller.php')
-      .then(res => {
-        window.location.assign("http://" + window.location.host);
-      })
-  }
+function logout() {
+  console.log(window.location.host);
+  fetch('controllers/logout_controller.php')
+    .then(res => {
+      window.location.assign("http://" + window.location.host);
+    })
+}
 </script>
 
 </html>

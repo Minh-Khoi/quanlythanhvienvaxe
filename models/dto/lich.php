@@ -8,12 +8,12 @@ class lich
    * Class constructor for lich instance.
    */
   public function __construct(
-    int $lich_id,
-    int $chulich_id,
-    int $laixe_id,
-    string $noidung_lich,
-    int $nhom_diem,
-    string $ngay_thang
+    int $lich_id = null,
+    int $chulich_id = null,
+    int $laixe_id = null,
+    string $noidung_lich = null,
+    int $nhom_diem = null,
+    string $ngay_thang = null
   ) {
     $this->lich_id = (isset($lich_id)) ?  $lich_id : $this->lich_id;
     $this->chulich_id = (isset($chulich_id)) ?  $chulich_id : $this->chulich_id;

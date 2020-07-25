@@ -90,13 +90,13 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
       </div>
     </form>
     <input type="submit" form="nhom_diem" value="OK">
-    <p>
+    <p style="color: red">
       <? echo (isset($_SESSION['chulich_wrong_zalo']) ? $_SESSION['chulich_wrong_zalo'] : "") . "<br>"
         . (isset($_SESSION['laixe_wrong_zalo']) ? $_SESSION['laixe_wrong_zalo'] : ""); ?>
     </p>
 
     <!-- Vùng này cho mục Tìm kiếm LỊCH -->
-    <form action="" class="grid-container-2" id="timkiem_lich">
+    <form action="tracuu_lich.php" method="POST" class="grid-container-2" id="timkiem_lich">
       <label for="search_lich">Tìm kiếm</label>
       <div style="text-align: justify">
         <input type="text" name="search_lich" id="search_lich" style="width: 100%"
@@ -151,3 +151,8 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
 <script src="./javascript_files/main.js"></script>
 
 </html>
+
+<?
+unset($_SESSION['chulich_wrong_zalo']);
+unset($_SESSION['laixe_wrong_zalo']);
+unset($_SESSION['search_lich']);
