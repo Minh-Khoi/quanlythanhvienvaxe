@@ -99,29 +99,32 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
     <form action="tracuu_lich.php" method="POST" class="grid-container-2" id="timkiem_lich">
       <label for="search_lich">Tìm kiếm</label>
       <div style="text-align: justify">
-        <input type="text" name="search_lich" id="search_lich" style="width: 100%"
-          placeholder="tìm kiếm thông tin lịch">
+        <input type="text" name="search_lich" id="search_lich" style="width: 100%" placeholder="tìm kiếm thông tin lịch"
+          <?= (isset($_SESSION['search_lich']) ? "value='{$_SESSION['search_lich']}'" : "") ?>>
       </div>
       <input type="submit" value="TÌm kiếm">
     </form>
 
     <!-- VÙng này cho mục điều chỉnh điểm -->
-    <form action="" class="grid-container-2" id="dieuchinh_diem" style="margin-bottom:0">
+    <form action="controllers/dieuchinh_diem.php" class="grid-container-2" id="dieuchinh_diem" method="POST"
+      style="margin-bottom:0">
       <label for="diem_dieuchinh">Điều chỉnh điểm</label>
       <div style="text-align: justify">
         <input type="text" name="nick_zalo_laixe" id="nick_zalo_laixe" style="width: 100%"
-          placeholder="Copy nick zalo lái xe">
+          placeholder="Copy nick zalo lái xe" onblur="hienthidiem_onblur()"
+          <?= (isset($_SESSION['dieuchinhdiem_member'])) ? "value='{$_SESSION['dieuchinhdiem_member']['zalo']}'" : "" ?>>
       </div>
       <div style="text-align: justify">
-        <input type="text" name="diem_laixe" id="diem_laixe" style="width: 85%" disabled>
+        <input type="text" name="diem_laixe" id="diem_laixe" style="width: 85%" disabled
+          <?= (isset($_SESSION['dieuchinhdiem_member'])) ? "value='{$_SESSION['dieuchinhdiem_member']['diem']}'" : "" ?>>
       </div>
       <div style="text-align: justify">
         <select name="diem_dieuchinh" id="diem_dieuchinh" style="width: auto">
-          <option value="+0.5" selected>+0.5</option>
-          <option value="+1">+1</option>
-          <option value="+1.5">+1.5</option>
-          <option value="+2">+2</option>
-          <option value="+3">+3</option>
+          <option value="0.5" selected>+0.5</option>
+          <option value="1">+1</option>
+          <option value="1.5">+1.5</option>
+          <option value="2">+2</option>
+          <option value="3">+3</option>
 
           <option value="-0.5">-0.5</option>
           <option value="-1">-1</option>
@@ -137,7 +140,7 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
     <form action="" class="grid-container-2" id="coc">
       <label for="tien_coc">Cọc</label>
       <div style="text-align: justify">
-        <input type="text" name="nick_zalo_laixe" id="nick_zalo_laixe" style="width: 100%"
+        <input type="text" name="nick_zalo_laixe_coc" id="nick_zalo_laixe_coc" style="width: 100%"
           placeholder="Copy nick zalo lái xe">
       </div>
       <div style="text-align: justify">
@@ -149,6 +152,23 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
   </div>
 </body>
 <script src="./javascript_files/main.js"></script>
+<script>
+function hienthidiem_onblur() {
+  let form_datas = new FormData();
+  let laixe = document.getElementById('nick_zalo_laixe');
+  let zalo_laixe = laixe.value;
+  form_datas.append("zalo_laixe", zalo_laixe);
+  // console.log(document.querySelector('select#diem_dieuchinh').value);
+
+  fetch("controllers/hienthi_diem_member.php", {
+      method: "POST",
+      body: form_datas
+    }).then(res => res.text())
+    .then((res) => {
+      document.querySelector('input#diem_laixe').value = res;
+    })
+}
+</script>
 
 </html>
 
@@ -156,3 +176,4 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
 unset($_SESSION['chulich_wrong_zalo']);
 unset($_SESSION['laixe_wrong_zalo']);
 unset($_SESSION['search_lich']);
+unset($_SESSION['dieuchinhdiem_member']);

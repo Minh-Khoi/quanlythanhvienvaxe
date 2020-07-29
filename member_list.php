@@ -30,39 +30,39 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Quản lý Group Highland</title>
   <style>
-    /* Modal for each cells of Table*/
-    /* The Modal (background) */
-    .modal {
-      display: none;
-      /* Hidden by default */
-      position: fixed;
-      /* Stay in place */
-      z-index: 1;
-      /* Sit on top */
-      left: 0;
-      top: 0;
-      width: 100%;
-      /* Full width */
-      height: 100%;
-      /* Full height */
-      overflow: auto;
-      /* Enable scroll if needed */
-      background-color: rgb(0, 0, 0);
-      /* Fallback color */
-      background-color: rgba(0, 0, 0, 0.4);
-      /* Black w/ opacity */
-    }
+  /* Modal for each cells of Table*/
+  /* The Modal (background) */
+  .modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
 
-    /* Modal Content/Box */
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      /* 15% from the top and centered */
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      /* Could be more or less, depending on screen size */
-    }
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+  }
   </style>
 </head>
 
@@ -75,7 +75,8 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
   </form>
 
   <!-- Search fields -->
-  <input type="text" id="myInput" onkeyup="searchTable()" placeholder="tìm theo tên, biến số xe, nick zalô, tình trạng hoạt động">
+  <input type="text" id="myInput" onkeyup="searchTable()"
+    placeholder="tìm theo tên, biến số xe, nick zalô, tình trạng hoạt động">
 
   <table align="center" border="1" id="myTable">
     <thead>
@@ -131,7 +132,8 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
                       <b>trạng thái</b>: " . (($member->trang_thai == 1) ? 'Bình thường' : 'không HĐ')  . " <br>
                       <b>ghi chú</b>: $member->ghi_chu <br>
                       <b>Biển số xe</b>: $member->BKS <br>
-                      <b>có cọc</b>: " . (($member->co_coc == 'x') ? 'có' : 'không') . `
+                      <b>có cọc</b>: "
+          . ((isset($member->co_coc) && is_numeric($member->co_coc)) ? 'có' : 'không') . `
                   </div>
 
               </div>`;
@@ -143,61 +145,61 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
 
 </body>
 <script>
-  function logout() {
-    // console.log(window.location.host);
-    fetch('controllers/logout_controller.php')
-      .then(res => {
-        window.location.assign("http://" + window.location.host);
-      })
-  }
+function logout() {
+  // console.log(window.location.host);
+  fetch('controllers/logout_controller.php')
+    .then(res => {
+      window.location.assign("http://" + window.location.host);
+    })
+}
 
-  function searchTable() {
-    // Declare variables 
-    let input, filter, table, tr, tds;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.querySelectorAll("tr.row");
-    // console.log(input);
-    // Loop through all table rows, and hide those who don't match the search query
-    for (let i = 0; i < tr.length; i++) {
-      tds = tr[i].getElementsByTagName("td");
-      let txtValues = [];
-      for (let j = 0; j < tds.length; j++) {
-        txtValues.push(tds[j].textContent || tds[j].innerText);
-      }
-      for (let j = 0; j < tds.length; j++) {
-        if ((txtValues[j].toUpperCase().indexOf(filter) > -1)) {
-          tr[i].style.display = "";
-          // console.log(txtValues[j]);
-          // console.log(filter);
-          break;
-        } else {
-          tr[i].style.display = "none";
-        }
+function searchTable() {
+  // Declare variables 
+  let input, filter, table, tr, tds;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.querySelectorAll("tr.row");
+  // console.log(input);
+  // Loop through all table rows, and hide those who don't match the search query
+  for (let i = 0; i < tr.length; i++) {
+    tds = tr[i].getElementsByTagName("td");
+    let txtValues = [];
+    for (let j = 0; j < tds.length; j++) {
+      txtValues.push(tds[j].textContent || tds[j].innerText);
+    }
+    for (let j = 0; j < tds.length; j++) {
+      if ((txtValues[j].toUpperCase().indexOf(filter) > -1)) {
+        tr[i].style.display = "";
+        // console.log(txtValues[j]);
+        // console.log(filter);
+        break;
+      } else {
+        tr[i].style.display = "none";
       }
     }
   }
+}
 
-  // Xử lý Modals khi người dùng click vào một row trong bảng
-  // Get the modal
-  let modals = document.getElementsByClassName("myModal");
-  // Get the button that opens the modal
-  let rows = document.querySelectorAll("tr.row");
-  for (let i = 0; i < rows.length; i++) {
-    // When the user clicks on the button, open the modal 
+// Xử lý Modals khi người dùng click vào một row trong bảng
+// Get the modal
+let modals = document.getElementsByClassName("myModal");
+// Get the button that opens the modal
+let rows = document.querySelectorAll("tr.row");
+for (let i = 0; i < rows.length; i++) {
+  // When the user clicks on the button, open the modal 
+  console.log(i);
+  rows[i].onclick = function() {
     console.log(i);
-    rows[i].onclick = function() {
-      console.log(i);
-      modals[i].style.display = "block";
-    };
-    // When the user clicks anywhere outside of the modal, close it
-    modals[i].onclick = function(event) {
-      if (event.target === modals[i]) {
-        modals[i].style.display = "none";
-      }
-    };
-  }
+    modals[i].style.display = "block";
+  };
+  // When the user clicks anywhere outside of the modal, close it
+  modals[i].onclick = function(event) {
+    if (event.target === modals[i]) {
+      modals[i].style.display = "none";
+    }
+  };
+}
 </script>
 
 </html>

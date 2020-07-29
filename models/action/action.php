@@ -26,6 +26,7 @@ class action
     die();
   }
 
+  /** add 01 lich object into database (for controllers/add_lich.php)*/
   public function add_lich(
     int $chulich_id,
     int $laixe_id,
@@ -35,5 +36,25 @@ class action
   ) {
     $lich = lich::construct($chulich_id, $laixe_id, $noidung_lich, $nhom_diem, $ngaythang_datlich);
     $this->lichDAO->create($lich);
+  }
+
+  /** HIỂN thị điểm của một member (dùng cho controllers/hienthi_diem_member.php) */
+  public function hienthi_diem(string $nick_zalo)
+  {
+    $member = $this->memberDAO->read_by_zalo($nick_zalo);
+    return $member->so_diem;
+  }
+
+  /** Tính toán và điều chỉnh điểm của member theo yêu cầu (dùng cho controllers/dieuchinh_diem.php) */
+  public function dieuchinh_diem(string $nick_zalo, float $nhom_diem)
+  {
+    $member = $this->memberDAO->read_by_zalo($nick_zalo);
+    $member->so_diem += $nhom_diem;
+    echo $nhom_diem;
+    // echo $member->so_diem;
+    $this->memberDAO->update_by_zalo($member);
+
+    $_SESSION['dieuchinhdiem_member']['zalo'] = $nick_zalo;
+    $_SESSION['dieuchinhdiem_member']['diem'] = $member->so_diem;
   }
 }

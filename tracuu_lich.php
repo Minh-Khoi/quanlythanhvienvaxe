@@ -11,8 +11,6 @@ $lichDAO = new lichDAO();
 $lich = $lichDAO->read_by_noidung($noidung_lich);
 if (!isset($lich)) {
   die("Không tìm thấy lịch với nội dung trên");
-  sleep(5);
-  header("Location: http://" . $_SERVER['HTTP_HOST'] . "/phanvung_ketoan.php");
 }
 
 $memberDAO = new memberDAO();
@@ -46,7 +44,9 @@ $laixe = $memberDAO->read_by_id($lich->laixe_id);
   <p>
     <b>Ngày đặt lịch:</b> <?= $lich->ngay_thang ?>
   </p>
-
+  <form action="phanvung_ketoan.php">
+    <input type="submit" value="Trở lại">
+  </form>
 </body>
 
 </html>
