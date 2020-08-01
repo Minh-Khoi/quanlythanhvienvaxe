@@ -16,7 +16,7 @@ if (!isset($_SESSION['ID'])) {
 $_SESSION["ID"] = session_id();
 // BƯỚC 2: KIỂM TRA ĐĂNG NHẬP: 
 // nếu người dùng chưa đăng nhập thì chuyển tới trang đăng nhập
-if (!isset($_SESSION["is_quantrivien"])) {
+if (!isset($_SESSION["is_quantrivien"]) && !isset($_POST["ten_dang_nhap"])) {
   header("Location: login.php");
 } else {
   if ($_SESSION["is_quantrivien_key"] != "key vàng" && $_SESSION["is_quantrivien_key"] != "kế toán") {

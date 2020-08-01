@@ -1,7 +1,6 @@
 <?
 require_once dirname(__FILE__) . "/models/dto/member.php";
 
-include dirname(__FILE__) . "/templates/quanly_session.php";
 // /** LÀM CÁC BƯỚC NÀY ĐỐI VỚI CÁC FILE ĐƯỢC GỌI BẰNG API */
 // // BƯỚC 1: KIỂM TRA SESSION
 // // Nếu trang này được tải tiếp tục tiến trình session trước đó. thiết lập session_id với id của session cũ
@@ -9,7 +8,7 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
 //   session_id($_SESSION['ID']);
 // }
 // session_set_cookie_params(360, "/");
-// session_start();
+session_start();
 // // Nếu trang này được tải bắt đầu lại với session mới. Sử dụng hàm session_regenerate_id()
 // if (!isset($_SESSION['ID'])) {
 //   session_regenerate_id();
@@ -68,6 +67,21 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
 
 <body style="text-align: center">
   <button onclick="logout()"> LOG OUT </button>
+
+  <!-- Form chuyển trang -->
+  <form action="controllers/load_memberlist.php" method="post">
+    <label for="xe_va_thanhvien">Quản lý xe và thành viên</label>
+    <input type="submit" value="GO" id="xe_va_thanhvien">
+  </form>
+  <form action="" method="post">
+    <label for="kich">Quản lý Kích (Khóa)</label>
+    <input type="submit" value="GO" id="kich">
+  </form>
+  <form action="phanvung_ketoan.php" method="post">
+    <label for="phanvung_ketoan">Quản lý điểm và phân vùng kế toán</label>
+    <input type="submit" value="GO" id="phanvung_ketoan">
+  </form>
+
   <h1>Hệ thống quản lý Group Highland</h1>
   <!-- This button rollback to homepage -->
   <form action="controllers/rollback_home.php">
@@ -118,7 +132,7 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
         echo "<td>" . (($member->trang_thai == 1) ? "Bình thường" : "không HĐ") . "</td>";
         echo "<td>" . $member->BKS . "</td>";
         echo "<td>" . get_shortform_of_ghichu($member->ghi_chu) . "</td>";
-        echo "<td>" . (($member->co_coc == 1) ? "x" : "") . "</td>";
+        echo "<td>" . (isset($member->co_coc) ? "x" : "") . "</td>";
         echo "<td>" . (($member->co_anh == 1) ? "x" : "") . "</td>";
         echo "</tr>";
 
@@ -133,10 +147,19 @@ include dirname(__FILE__) . "/templates/quanly_session.php";
                       <b>ghi chú</b>: $member->ghi_chu <br>
                       <b>Biển số xe</b>: $member->BKS <br>
                       <b>có cọc</b>: "
-          . ((isset($member->co_coc) && is_numeric($member->co_coc)) ? 'có' : 'không') . `
+          . ((isset($member->co_coc) && is_numeric($member->co_coc)) ? 'có' : 'không') . '<br>
+                      <button onclick="show_field_hoandoi(' . $member->member_id . ')">Hoán đổi đến vị trí số</button>
+                      <div style="display:none" class="hoandoi_chothanhvien' . $member->member_id . '">
+                        <input type="text" > <button onclick="handle_hoandoi( '
+          . $member->member_id . ',0)">OK</button> <br>
+                        <button onclick="handle_hoandoi(' . $member->member_id . ','
+          . (intval($member->member_id) - 2)  . ')"> Lên trên </button>  
+                        <button onclick="handle_hoandoi(' . $member->member_id . ','
+          . (intval($member->member_id)) . ')"> xuống dưới </button>    
+                      </div>
                   </div>
 
-              </div>`;
+              </div>';
       }
       ?>
     </tbody>
@@ -153,6 +176,49 @@ function logout() {
     })
 }
 
+/** Hiển thị text field và button cho chức năng hoán đổi vị trí */
+function show_field_hoandoi(id_thanhvien) {
+  if (document.querySelector(".hoandoi_chothanhvien" + id_thanhvien).style.display == "none") {
+    document.querySelector(".hoandoi_chothanhvien" + id_thanhvien).style.display = "block";
+  } else {
+    document.querySelector(".hoandoi_chothanhvien" + id_thanhvien).style.display = "none";
+  }
+}
+
+/** Call API handle_hoandoi để hoán đổi thông tin giữa các thành viên */
+function handle_hoandoi(id_bandau, id_moi) {
+  let id_bandau_send = id_bandau;
+  let id_moi_send = -1;
+  // Nếu ID mới == 0 thì lấy giá trị trong ô input, trường hợp ô input rỗng thì không thực hiện lệnh fetch API
+  if (id_moi == 0 && document.querySelector(".hoandoi_chothanhvien" + id_bandau + " input").value.length == 0) {
+    // do nothing
+  } else {
+    if (id_moi == 0) {
+      id_moi_send = document.querySelector(".hoandoi_chothanhvien" + id_bandau + " input").value;
+    } else {
+      id_moi_send = id_moi;
+    }
+    // console.log(id_moi_send);
+    // Call Fetch API
+    let form_datas = new FormData();
+    form_datas.append("id_bandau_send", id_bandau_send);
+    form_datas.append("id_moi_send", id_moi_send);
+    fetch("controllers/hoan_doi.php", {
+        method: "POST",
+        body: form_datas
+      }).then(res => res.text())
+      .then(res => {
+        if (res.length == 0) {
+          alert("Hoán đổi thành công");
+        } else {
+          alert(res);
+        }
+        window.location.assign("http://" + window.location.host + "/controllers/load_memberlist.php");
+      })
+  }
+}
+
+/** Function này xử lý chức năng tìm kiếm trong bảng */
 function searchTable() {
   // Declare variables 
   let input, filter, table, tr, tds;
@@ -188,9 +254,7 @@ let modals = document.getElementsByClassName("myModal");
 let rows = document.querySelectorAll("tr.row");
 for (let i = 0; i < rows.length; i++) {
   // When the user clicks on the button, open the modal 
-  console.log(i);
   rows[i].onclick = function() {
-    console.log(i);
     modals[i].style.display = "block";
   };
   // When the user clicks anywhere outside of the modal, close it

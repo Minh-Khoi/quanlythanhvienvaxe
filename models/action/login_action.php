@@ -22,16 +22,22 @@ class login_action
   /** This function handle the login request */
   public function login_accept(string $nick_zalo, string $password)
   {
-    $quantrivien = $this->quantrivienDAO->read_by_zalo($nick_zalo);
-    if (!is_null($quantrivien) && md5($password) == $quantrivien->password) {
-      $_SESSION["is_quantrivien"] = $nick_zalo;
-      $_SESSION["is_quantrivien_key"] = $quantrivien->loai_key;
-      $_SESSION["list_quantrivien"] = $this->quantrivienDAO->read_all();
-      // echo $_SERVER["HTTP_HOST"];
-      header("Location: http://" . $_SERVER["HTTP_HOST"]);
-    } else {
-      $_SESSION["login_error"] = "Wrong nick_zalo and password";
-      header("Location: http://" . $_SERVER["HTTP_HOST"] . "/login.php");
+    try {
+      $quantrivien = $this->quantrivienDAO->read_by_zalo($nick_zalo);
+      // var_dump(($quantrivien));
+
+      if (!is_null($quantrivien) && md5($password) == $quantrivien->password) {
+        $_SESSION["is_quantrivien"] = $nick_zalo;
+        $_SESSION["is_quantrivien_key"] = $quantrivien->loai_key;
+        $_SESSION["list_quantrivien"] = $this->quantrivienDAO->read_all();
+        // var_dump($_SESSION["is_quantrivien"]);
+        header("Location: http://" . $_SERVER["HTTP_HOST"]);
+      } else {
+        $_SESSION["login_error"] = "Wrong nick_zalo and password";
+        header("Location: http://" . $_SERVER["HTTP_HOST"] . "/login.php");
+      }
+    } catch (Exception $e) {
+      print_r($e);
     }
   }
 }

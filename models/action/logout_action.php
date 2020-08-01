@@ -22,8 +22,10 @@ class logout_action
   /** THis function handle logout request */
   public function logout_done()
   {
+    // echo $_SESSION['ID'];
     unset($_SESSION["ID"]);
-    session_destroy();
+    session_unset();
+    var_dump($_SESSION);
     // header("Location: http://" . $_SERVER["HTTP_HOST"]);
   }
 }

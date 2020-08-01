@@ -1,6 +1,5 @@
 <?
-include dirname(__FILE__, 2) . "/templates/quanly_session.php";
-
+session_start();
 require_once dirname(__FILE__, 2) . "/models/action/action.php";
 require_once dirname(__FILE__, 2) . "/models/dao/member.dao.php";
 

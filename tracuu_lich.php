@@ -1,5 +1,4 @@
 <?
-include dirname(__FILE__) . "/templates/quanly_session.php";
 
 require_once dirname(__FILE__) . "/models/dao/lich.dao.php";
 require_once dirname(__FILE__) . "/models/dao/member.dao.php";
