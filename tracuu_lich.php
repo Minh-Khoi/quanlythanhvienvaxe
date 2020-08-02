@@ -3,6 +3,8 @@
 require_once dirname(__FILE__) . "/models/dao/lich.dao.php";
 require_once dirname(__FILE__) . "/models/dao/member.dao.php";
 
+session_set_cookie_params(3600, "/");
+session_start();
 $_SESSION['search_lich'] = (isset($_POST['search_lich'])) ? $_POST['search_lich'] : $_SESSION['search_lich'];
 
 $noidung_lich = $_SESSION['search_lich'];

@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . "/models/dto/quantrivien.php";
 
 session_set_cookie_params(3600, "/");
 session_start();
-$_SESSION['ID'] = session_id();
+// $_SESSION['ID'] = session_id();
 // var_dump($_SESSION);
 //  KIỂM TRA ĐĂNG NHẬP: 
 // nếu người dùng chưa đăng nhập thì chuyển tới trang đăng nhập

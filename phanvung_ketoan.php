@@ -2,6 +2,8 @@
 require_once dirname(__FILE__) . "/models/dto/quantrivien.php";
 require_once dirname(__FILE__) . "/models/dto/member.php";
 
+
+session_set_cookie_params(3600, "/");
 session_start();
 
 // make the input value blank
@@ -19,21 +21,21 @@ unset($_SESSION["dieuchinhcoc_member"]);
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hệ thống quản lý Group Highland</title>
   <style>
-    .grid-container-1 {
-      display: grid;
-      grid-template-columns: 10vw auto;
-      /* grid-template-rows: 30px; */
-      grid-gap: 10px;
-      margin: 15px auto;
-    }
+  .grid-container-1 {
+    display: grid;
+    grid-template-columns: 10vw auto;
+    /* grid-template-rows: 30px; */
+    grid-gap: 10px;
+    margin: 15px auto;
+  }
 
-    .grid-container-2 {
-      display: grid;
-      grid-template-columns: 10vw 12vw 8vw 11vw;
-      /* grid-template-rows: 30px; */
-      grid-gap: 15px;
-      margin: 15px auto;
-    }
+  .grid-container-2 {
+    display: grid;
+    grid-template-columns: 10vw 12vw 8vw 11vw;
+    /* grid-template-rows: 30px; */
+    grid-gap: 15px;
+    margin: 15px auto;
+  }
   </style>
 </head>
 
@@ -96,19 +98,24 @@ unset($_SESSION["dieuchinhcoc_member"]);
     <form action="tracuu_lich.php" method="POST" class="grid-container-2" id="timkiem_lich">
       <label for="search_lich">Tìm kiếm</label>
       <div style="text-align: justify">
-        <input type="text" name="search_lich" id="search_lich" style="width: 100%" placeholder="tìm kiếm thông tin lịch" <?= (isset($_SESSION['search_lich']) ? "value='{$_SESSION['search_lich']}'" : "") ?>>
+        <input type="text" name="search_lich" id="search_lich" style="width: 100%" placeholder="tìm kiếm thông tin lịch"
+          <?= (isset($_SESSION['search_lich']) ? "value='{$_SESSION['search_lich']}'" : "") ?>>
       </div>
       <input type="submit" value="TÌm kiếm">
     </form>
 
     <!-- VÙng này cho mục điều chỉnh điểm -->
-    <form action="controllers/dieuchinh_diem.php" class="grid-container-2" id="dieuchinh_diem" method="POST" style="margin-bottom:0">
+    <form action="controllers/dieuchinh_diem.php" class="grid-container-2" id="dieuchinh_diem" method="POST"
+      style="margin-bottom:0">
       <label for="diem_dieuchinh">Điều chỉnh điểm</label>
       <div style="text-align: justify">
-        <input type="text" name="nick_zalo_laixe" id="nick_zalo_laixe" style="width: 100%" placeholder="Copy nick zalo lái xe" onblur="hienthidiem_onblur()" <?= (isset($_SESSION['dieuchinhdiem_member'])) ? "value='{$_SESSION['dieuchinhdiem_member']['zalo']}'" : "" ?>>
+        <input type="text" name="nick_zalo_laixe" id="nick_zalo_laixe" style="width: 100%"
+          placeholder="Copy nick zalo lái xe" onblur="hienthidiem_onblur()"
+          <?= (isset($_SESSION['dieuchinhdiem_member'])) ? "value='{$_SESSION['dieuchinhdiem_member']['zalo']}'" : "" ?>>
       </div>
       <div style="text-align: justify">
-        <input type="text" name="diem_laixe" id="diem_laixe" style="width: 85%" disabled <?= (isset($_SESSION['dieuchinhdiem_member'])) ? "value='{$_SESSION['dieuchinhdiem_member']['diem']}'" : "" ?>>
+        <input type="text" name="diem_laixe" id="diem_laixe" style="width: 85%" disabled
+          <?= (isset($_SESSION['dieuchinhdiem_member'])) ? "value='{$_SESSION['dieuchinhdiem_member']['diem']}'" : "" ?>>
       </div>
       <div style="text-align: justify">
         <select name="diem_dieuchinh" id="diem_dieuchinh" style="width: auto">
@@ -132,10 +139,13 @@ unset($_SESSION["dieuchinhcoc_member"]);
     <form action="controllers/dat_coc.php" class="grid-container-2" id="coc" method="POST">
       <label for="tien_coc">Cọc</label>
       <div style="text-align: justify">
-        <input type="text" name="nick_zalo_laixe_coc" id="nick_zalo_laixe_coc" style="width: 100%" placeholder="Copy nick zalo lái xe" onblur="hienthitiencoc()" <?= (isset($_SESSION['dieuchinhcoc_member'])) ? "value='{$_SESSION['dieuchinhcoc_member']['zalo']}'" : "" ?>>
+        <input type="text" name="nick_zalo_laixe_coc" id="nick_zalo_laixe_coc" style="width: 100%"
+          placeholder="Copy nick zalo lái xe" onblur="hienthitiencoc()"
+          <?= (isset($_SESSION['dieuchinhcoc_member'])) ? "value='{$_SESSION['dieuchinhcoc_member']['zalo']}'" : "" ?>>
       </div>
       <div style="text-align: justify">
-        <input type="text" name="tien_coc" id="tien_coc" style="width: 85%" <?= (isset($_SESSION['dieuchinhcoc_member'])) ? "value='{$_SESSION['dieuchinhcoc_member']['tien']}'" : "" ?>>
+        <input type="text" name="tien_coc" id="tien_coc" style="width: 85%"
+          <?= (isset($_SESSION['dieuchinhcoc_member'])) ? "value='{$_SESSION['dieuchinhcoc_member']['tien']}'" : "" ?>>
       </div>
       <input type="submit" value="OK">
     </form>
@@ -144,38 +154,38 @@ unset($_SESSION["dieuchinhcoc_member"]);
 </body>
 <script src="./javascript_files/main.js"></script>
 <script>
-  /** THis function use for event onblur of element input #hien_thi_diem */
-  function hienthidiem_onblur() {
-    let form_datas = new FormData();
-    let laixe = document.getElementById('nick_zalo_laixe');
-    let zalo_laixe = laixe.value;
-    form_datas.append("zalo_laixe", zalo_laixe);
-    // console.log(document.querySelector('select#diem_dieuchinh').value);
+/** THis function use for event onblur of element input #hien_thi_diem */
+function hienthidiem_onblur() {
+  let form_datas = new FormData();
+  let laixe = document.getElementById('nick_zalo_laixe');
+  let zalo_laixe = laixe.value;
+  form_datas.append("zalo_laixe", zalo_laixe);
+  // console.log(document.querySelector('select#diem_dieuchinh').value);
 
-    fetch("controllers/hienthi_diem_member.php", {
-        method: "POST",
-        body: form_datas
-      }).then(res => res.text())
-      .then((res) => {
-        document.querySelector('input#diem_laixe').value = res;
-      })
-  }
+  fetch("controllers/hienthi_diem_member.php", {
+      method: "POST",
+      body: form_datas
+    }).then(res => res.text())
+    .then((res) => {
+      document.querySelector('input#diem_laixe').value = res;
+    })
+}
 
-  /** THis function use for event onblur of element input #tien_coc */
-  function hienthitiencoc() {
-    let form_datas = new FormData();
-    let laixe = document.getElementById('nick_zalo_laixe_coc');
-    let zalo_laixe = laixe.value;
-    form_datas.append("zalo_laixe", zalo_laixe);
+/** THis function use for event onblur of element input #tien_coc */
+function hienthitiencoc() {
+  let form_datas = new FormData();
+  let laixe = document.getElementById('nick_zalo_laixe_coc');
+  let zalo_laixe = laixe.value;
+  form_datas.append("zalo_laixe", zalo_laixe);
 
-    fetch("controllers/hienthi_tiencoc.php", {
-        method: "POST",
-        body: form_datas
-      }).then(res => res.text())
-      .then((res) => {
-        document.querySelector('input#tien_coc').value = res;
-      })
-  }
+  fetch("controllers/hienthi_tiencoc.php", {
+      method: "POST",
+      body: form_datas
+    }).then(res => res.text())
+    .then((res) => {
+      document.querySelector('input#tien_coc').value = res;
+    })
+}
 </script>
 
 </html>
