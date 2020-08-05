@@ -2,7 +2,8 @@
 
 class member
 {
-  public $member_id, $ho_ten, $nick_zalo, $so_diem, $trang_thai, $BKS, $co_coc, $ghi_chu, $co_anh;
+  public $member_id, $ho_ten, $nick_zalo, $so_diem, $trang_thai, $BKS,
+    $co_coc, $ghi_chu, $co_anh, $thoidiem_bikhoa, $thoihan_bikhoa;
 
   /**
    * Class constructor for member instance.
@@ -17,7 +18,9 @@ class member
     string $BKS = null,
     string $ghi_chu = null,
     int $co_coc = null,
-    int $co_anh = null
+    int $co_anh = null,
+    int $thoidiem_bikhoa = null,
+    int $thoihan_bikhoa = null
   ) {
     $this->member_id = ($member_id != null) ? $member_id : $this->member_id;
     $this->$ho_ten = ($ho_ten != null) ? $ho_ten : $this->ho_ten;
@@ -29,6 +32,12 @@ class member
     $this->ghi_chu = (isset($ghi_chu)) ? $ghi_chu : $this->ghi_chu;
     $this->co_coc = (isset($co_coc)) ? $co_coc : $this->co_coc;
     $this->co_anh = (isset($co_anh)) ? $co_anh : $this->co_anh;
+    // Riêng với $thoidiem_bikhoa và $thoihan_bikhoa phải có điều kiện với thuộc tính $trang_thai
+    $this->thoidiem_bikhoa = (isset($thoidiem_bikhoa)) ? $thoidiem_bikhoa : $this->thoidiem_bikhoa;
+    $this->thoihan_bikhoa = (isset($thoihan_bikhoa)) ? $thoihan_bikhoa : $this->thoihan_bikhoa;
+    if ($this->trang_thai == 1) {
+      unset($this->thoidiem_bikhoa, $this->thoihan_bikhoa);
+    }
   }
 
   /** 
@@ -43,7 +52,9 @@ class member
     string $BKS,
     string $ghi_chu,
     int $co_coc,
-    int $co_anh
+    int $co_anh,
+    int $thoidiem_bikhoa,
+    int $thoihan_bikhoa
   ): member {
     $instance = new member(
       0,
@@ -55,7 +66,9 @@ class member
       $BKS,
       $ghi_chu,
       $co_coc,
-      $co_anh
+      $co_anh,
+      $thoidiem_bikhoa,
+      $thoihan_bikhoa
     );
     return $instance;
   }

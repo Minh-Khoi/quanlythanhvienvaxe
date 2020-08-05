@@ -131,15 +131,32 @@ session_start();
                       <b>Biển số xe</b>: $member->BKS <br>
                       <b>có cọc</b>: "
           . ((isset($member->co_coc) && is_numeric($member->co_coc)) ? 'có' : 'không') . '<br>
+          '
+          // Vùng này để form hoán đổi
+          . '
                       <button onclick="show_field_hoandoi(' . $member->member_id . ')">Hoán đổi đến vị trí số</button>
                       <div style="display:none" class="hoandoi_chothanhvien' . $member->member_id . '">
                         <input type="text" > <button onclick="handle_hoandoi( '
           . $member->member_id . ',0)">OK</button> <br>
                         <button onclick="handle_hoandoi(' . $member->member_id . ','
-          . (intval($member->member_id) - 2)  . ')"> Lên trên </button>  
+          . (($member->member_id != 0) ? (intval($member->member_id) - 2) : 0)
+          . ')"> Lên trên </button>  
                         <button onclick="handle_hoandoi(' . $member->member_id . ','
-          . (intval($member->member_id)) . ')"> xuống dưới </button>    
-                      </div>
+          . (($member->member_id != count($_SESSION["list_member"])) ? (intval($member->member_id)) : 0)
+          . ')"> xuống dưới </button>    
+                      </div> <br>' .
+          // vùng ngày để form "KHÓA thành viên"
+          '
+                      <button onclick="show_field_khoathanhvien(' . $member->member_id . ')">KHÓA thành viên này</button>
+                      <div style="display:none" class="khoa_chothanhvien' . $member->member_id . '">
+                        <input type="text" placeholder="Khóa bao lâu">
+                        <select>
+                          <option value="giờ">giờ</option>
+                          <option value="ngày">ngày</option>
+                          <option value="tháng">tháng</option>
+                        </select>
+                        <button onclick="handle_khoa(' . $member->member_id . ',0)">OK</button> <br>
+                      </div> <br>
                   </div>
 
               </div>';
@@ -168,12 +185,24 @@ function show_field_hoandoi(id_thanhvien) {
   }
 }
 
+/** Hiển thị text field và button cho chức năng khóa thành viên */
+function show_field_khoathanhvien(id_thanhvien) {
+  // console.log(id_thanhvien);
+  if (document.querySelector(".khoa_chothanhvien" + id_thanhvien).style.display == "none") {
+    document.querySelector(".khoa_chothanhvien" + id_thanhvien).style.display = "block";
+  } else {
+    document.querySelector(".khoa_chothanhvien" + id_thanhvien).style.display = "none";
+  }
+}
+
+// let holder = < ? php echo count($_SESSION["list_member"]); ? > ;
 /** Call API handle_hoandoi để hoán đổi thông tin giữa các thành viên */
 function handle_hoandoi(id_bandau, id_moi) {
   let id_bandau_send = id_bandau;
   let id_moi_send = -1;
   // Nếu ID mới == 0 thì lấy giá trị trong ô input, trường hợp ô input rỗng thì không thực hiện lệnh fetch API
-  if (id_moi == 0 && document.querySelector(".hoandoi_chothanhvien" + id_bandau + " input").value.length == 0) {
+  if ((id_moi == 0) &&
+    document.querySelector(".hoandoi_chothanhvien" + id_bandau + " input").value.length == 0) {
     // do nothing
   } else {
     if (id_moi == 0) {
@@ -209,7 +238,7 @@ function searchTable() {
   filter = input.value.toUpperCase();
   table = document.getElementById("myTable");
   tr = table.querySelectorAll("tr.row");
-  // console.log(input);
+
   // Loop through all table rows, and hide those who don't match the search query
   for (let i = 0; i < tr.length; i++) {
     tds = tr[i].getElementsByTagName("td");
@@ -220,8 +249,6 @@ function searchTable() {
     for (let j = 0; j < tds.length; j++) {
       if ((txtValues[j].toUpperCase().indexOf(filter) > -1)) {
         tr[i].style.display = "";
-        // console.log(txtValues[j]);
-        // console.log(filter);
         break;
       } else {
         tr[i].style.display = "none";

@@ -104,7 +104,7 @@ class memberDAO
   /** 
    * This function swap the order of 2 member in database. 
    */
-  public function swap_by_zalo(member $m1, member $m2)
+  public function swap(member $m1, member $m2)
   {
     try {
       // Set an holder for $m1
@@ -196,6 +196,25 @@ class memberDAO
       $SQL = "select * from chulich_va_laixe where member_id = :member_id";
       $stmt = $this->conn->prepare($SQL);
       $stmt->bindParam(":member_id", $id);
+      $stmt->execute();
+      $res = $stmt->fetchAll(PDO::FETCH_CLASS, "member");
+      return $res[0];
+    } catch (PDOException $e) {
+      print_r("error is " . $e->getMessage());
+      // return null;
+    }
+    return false;
+  }
+
+  /** 
+   * read  member from database by $trang_thai
+   */
+  public function read_by_trang_thai(int $trang_thai)
+  {
+    try {
+      $SQL = "select * from chulich_va_laixe where trang_thai = :trang_thai";
+      $stmt = $this->conn->prepare($SQL);
+      $stmt->bindParam(":trang_thai", $trang_thai);
       $stmt->execute();
       $res = $stmt->fetchAll(PDO::FETCH_CLASS, "member");
       return $res[0];

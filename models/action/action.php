@@ -84,7 +84,7 @@ class action
     $member2 = $this->memberDAO->read_by_id($id_moi);
 
     if (isset($member1) && isset($member2)) {
-      $this->memberDAO->swap_by_zalo($member1, $member2);
+      $this->memberDAO->swap($member1, $member2);
     } else {
       die("không hoán đổi được");
     }
