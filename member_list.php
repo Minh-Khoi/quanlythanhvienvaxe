@@ -149,13 +149,14 @@ session_start();
           '
                       <button onclick="show_field_khoathanhvien(' . $member->member_id . ')">KHÓA thành viên này</button>
                       <div style="display:none" class="khoa_chothanhvien' . $member->member_id . '">
-                        <input type="text" placeholder="Khóa bao lâu">
-                        <select>
-                          <option value="giờ">giờ</option>
-                          <option value="ngày">ngày</option>
-                          <option value="tháng">tháng</option>
+                        <input type="text" 
+                            class="thoigian_khoathanhvien' . $member->member_id . '" placeholder="Khóa bao lâu">
+                        <select class="donvi_thoigian_khoathanhvien' . $member->member_id . '">
+                          <option value="hour">giờ</option>
+                          <option value="day">ngày</option>
+                          <option value="month">tháng</option>
                         </select>
-                        <button onclick="handle_khoa(' . $member->member_id . ',0)">OK</button> <br>
+                        <button onclick="handle_khoathanhvien(' . $member->member_id . ')">OK</button> <br>
                       </div> <br>
                   </div>
 
@@ -195,7 +196,6 @@ function show_field_khoathanhvien(id_thanhvien) {
   }
 }
 
-// let holder = < ? php echo count($_SESSION["list_member"]); ? > ;
 /** Call API handle_hoandoi để hoán đổi thông tin giữa các thành viên */
 function handle_hoandoi(id_bandau, id_moi) {
   let id_bandau_send = id_bandau;
@@ -228,6 +228,21 @@ function handle_hoandoi(id_bandau, id_moi) {
         window.location.assign("http://" + window.location.host + "/controllers/load_memberlist.php");
       })
   }
+}
+
+/** Call API handle_hoandoi để khóa 01 thành viên */
+function handle_khoathanhvien(int id_thanhvien) {
+  let thoigian_khoathanhvien = document.querySelector(".thoigian_khoathanhvien" + id_thanhvien);
+  let donvi_thoigian_khoathanhvien = document.querySelector(".donvi_thoigian_khoathanhvien" + id_thanhvien);
+
+  let form_datas = new FormData();
+  form_datas.append("thoigian_khoathanhvien", thoigian_khoathanhvien);
+  form_datas.append("donvi_thoigian_khoathanhvien", donvi_thoigian_khoathanhvien);
+  fetch("controllers/khoa_chothanhvien.php", {
+    method: "POST",
+    body: form_datas
+  }).then(res => res.text())
+
 }
 
 /** Function này xử lý chức năng tìm kiếm trong bảng */
