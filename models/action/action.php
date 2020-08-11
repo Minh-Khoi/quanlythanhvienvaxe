@@ -18,16 +18,18 @@ class action
     $this->lichDAO = new lichDAO();
   }
 
-  /** LOad list of member from database (for index.php) */
+  /** LOad list of member from database  */
   public function load_memberlist()
   {
     $_SESSION["list_member"] = $this->memberDAO->read_all();
-    var_dump($_SESSION["list_member"]);
+    foreach ($_SESSION["list_member"] as $k => $member) {
+      $this->release_thanhvien($member->member_id, false);
+    }
     header("Location: http://" . $_SERVER["HTTP_HOST"] . "/member_list.php");
     // die();
   }
 
-  /** add 01 lich object into database (for controllers/add_lich.php)*/
+  /** add 01 lich object into database (for scontrollers/add_lich.php)*/
   public function add_lich(
     int $chulich_id,
     int $laixe_id,
@@ -84,10 +86,54 @@ class action
     $member2 = $this->memberDAO->read_by_id($id_moi);
 
     if (isset($member1) && isset($member2)) {
+      // echo "fine";
       $this->memberDAO->swap($member1, $member2);
     } else {
       die("không hoán đổi được");
     }
-    // header("Location : http://{$_SERVER["HTTP_HOST"]}/member_list.php")
+  }
+
+  /** Khóa thành viên (theo id) */
+  public function khoa_thanhvien(int $member_id, int $thoihan, string $donvi_tinh)
+  {
+    $member = $this->memberDAO->read_by_id($member_id);
+    // calculate the "thoi gian khoa"
+    $thoidiem_bikhoa = time();
+    $thoihan_giaikhoa = $thoidiem_bikhoa;
+    if ($donvi_tinh == "hour") {
+      $thoihan_giaikhoa += $thoihan * 3600;
+    } else if ($donvi_tinh == "day") {
+      $thoihan_giaikhoa += $thoihan * 3600 * 24;
+    } else if ($donvi_tinh == "month") {
+      $thoihan_giaikhoa += $thoihan * 3600 * 24 * 30;
+    }
+    // echo $donvi_tinh;
+    $member->trang_thai = 0;
+    $member->thoidiem_bikhoa = $thoidiem_bikhoa;
+    $member->thoihan_bikhoa = $thoihan_giaikhoa;
+
+    $this->memberDAO->update_by_zalo($member);
+  }
+
+  /** 
+   * GIẢI PHÓNG CHO THÀNH VIÊN BỊ KHÓA 
+   * Nhằm xử lý giải khóa thành viên trược tiếp (file quanly_kich.php)
+   * và giải khóa thành viên sau khi hết thời hạn khóa (trong hàm $this->load_memberlist() kể trên)
+   */
+  public function release_thanhvien(int $member_id, bool $is_forced)
+  {
+    $member = $this->memberDAO->read_by_id($member_id);
+
+    if ($is_forced) {
+      $member->thoidiem_bikhoa = null;
+      $member->thoihan_bikhoa = null;
+      $member->trang_thai = 1;
+    } else if ($member->thoihan_bikhoa <= time()) {
+      $member->thoidiem_bikhoa = null;
+      $member->thoihan_bikhoa = null;
+      $member->trang_thai = 1;
+    }
+    $this->memberDAO->update_by_zalo($member);
+    $_SESSION["list_member"] = $this->memberDAO->read_all();
   }
 }

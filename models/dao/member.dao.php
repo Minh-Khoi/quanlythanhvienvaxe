@@ -53,7 +53,9 @@ class memberDAO
                                 BKS= :BKS,
                                 ghi_chu= :ghi_chu,
                                 co_coc= :co_coc,
-                                co_anh= :co_anh
+                                co_anh= :co_anh,
+                                thoidiem_bikhoa=:thoidiem_bikhoa,
+                                thoihan_bikhoa=:thoihan_bikhoa
                           where nick_zalo=:nick_zalo";
       $stmt = $this->conn->prepare($SQL);
       $stmt->bindParam(":so_diem", $member->so_diem);
@@ -62,6 +64,8 @@ class memberDAO
       $stmt->bindParam(":ghi_chu", $member->ghi_chu);
       $stmt->bindParam(":co_coc", $member->co_coc);
       $stmt->bindParam(":co_anh", $member->co_anh);
+      $stmt->bindParam(":thoidiem_bikhoa", $member->thoidiem_bikhoa);
+      $stmt->bindParam(":thoihan_bikhoa", $member->thoihan_bikhoa);
       $stmt->bindParam(":nick_zalo", $member->nick_zalo);
 
       $stmt->execute();
@@ -71,7 +75,7 @@ class memberDAO
   }
 
   /** 
-   * Update member by member_id. This is a helper for the next function swap_by_zalo()
+   * Update member by member_id. This is a helper for the next function swap()
    */
   private function update_by_id(member $member)
   {
@@ -83,7 +87,9 @@ class memberDAO
                                 co_coc= :co_coc,
                                 co_anh= :co_anh,
                                 ho_ten= :ho_ten,
-                                nick_zalo=:nick_zalo
+                                nick_zalo=:nick_zalo,
+                                thoidiem_bikhoa=:thoidiem_bikhoa,
+                                thoihan_bikhoa=:thoihan_bikhoa
                             where member_id = :member_id";
       $stmt = $this->conn->prepare($SQL);
       $stmt->bindParam(":so_diem", $member->so_diem);
@@ -94,6 +100,8 @@ class memberDAO
       $stmt->bindParam(":co_anh", $member->co_anh);
       $stmt->bindParam(":ho_ten", $member->ho_ten);
       $stmt->bindParam(":nick_zalo", $member->nick_zalo);
+      $stmt->bindParam(":thoidiem_bikhoa", $member->thoidiem_bikhoa);
+      $stmt->bindParam(":thoihan_bikhoa", $member->thoihan_bikhoa);
       $stmt->bindParam(":member_id", $member->member_id);
 
       $stmt->execute();
@@ -101,6 +109,7 @@ class memberDAO
       print_r("error is " . $e->getMessage());
     }
   }
+
   /** 
    * This function swap the order of 2 member in database. 
    */
@@ -118,6 +127,9 @@ class memberDAO
       $m1->ghi_chu = $m2->ghi_chu;
       $m1->co_coc = $m2->co_coc;
       $m1->co_anh = $m2->co_anh;
+      $m1->thoidiem_bikhoa = $m2->thoidiem_bikhoa;
+      $m1->thoihan_bikhoa = $m2->thoihan_bikhoa;
+      // echo "chuyện gì vậy";
       // Invoke function update_by_id, replace the old properties of $m1 (already saved in Database)
       // and replace new properties which 've been copied from $m2
       $this->update_by_id($m1);
@@ -147,6 +159,7 @@ class memberDAO
       print_r("error is " . $e->getMessage());
     }
   }
+
 
   /** 
    * read all member from database

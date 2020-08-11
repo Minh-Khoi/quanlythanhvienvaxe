@@ -5,6 +5,9 @@ require_once dirname(__FILE__) . "/models/dto/member.php";
 
 session_set_cookie_params(3600, "/");
 session_start();
+if ($_SESSION['is_quantrivien_key'] != "key vàng" && $_SESSION['is_quantrivien_key'] != "kế toán") {
+  die("<b>bạn không có quyền truy cập trang này</b>");
+}
 
 // make the input value blank
 unset($_SESSION["dieuchinhdiem_member"]);

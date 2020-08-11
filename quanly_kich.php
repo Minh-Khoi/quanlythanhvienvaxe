@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . "/models/dto/member.php";
 
 session_set_cookie_params(3600, "/");
 session_start();
@@ -12,6 +13,42 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Quản lý Group Highland</title>
+  <style>
+  /* Modal for each cells of Table*/
+  /* The Modal (background) */
+  .modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+  }
+  </style>
+
 </head>
 
 <body style="text-align: center">
@@ -35,7 +72,7 @@ session_start();
 
   <!-- Search fields -->
   <input type="text" id="myInput" onkeyup="searchTable()"
-    placeholder="tìm theo tên, biến số xe, nick zalô, tình trạng hoạt động">
+    placeholder="tìm theo tên, biến số xe, nick zalô, tình trạng hoạt động" />
 
   <table align="center" border="1" id="myTable">
     <thead>
@@ -51,16 +88,32 @@ session_start();
     <tbody>
       <?php
       foreach ($_SESSION["list_member"] as $index => $member) {
-        if ($member->trang_thai != 1){
+        if ($member->trang_thai != 1) {
           echo "<tr class='row'>";
           echo "<td>" . $member->member_id . "</td>";
           echo "<td>" . $member->ho_ten . "</td>";
           echo "<td>" . $member->nick_zalo . "</td>";
           echo "<td>" . $member->so_dienthoai . "</td>";
-          echo "<td>" . $member->thoidiem_bikhoa . "</td>";
-          echo "<td>" . $member->thoihan_bikhoa . "</td>";
+          echo "<td>" . date("d/m/Y h:m:s", $member->thoidiem_bikhoa) . "</td>";
+          echo "<td>" . date("d/m/Y h:m:s", $member->thoihan_bikhoa) . "</td>";
           echo "</tr>";
+          echo "<!-- The Modal -->
+        
+              <div  class='modal myModal'>
+                  <!-- Modal content -->
+                  <div class='modal-content'>
+                      <b>Lái xe</b>: $member->ho_ten <br>
+                      <b>số điện thoại</b>: $member->so_dienthoai<br>
+                      <b>trạng thái</b>: " . (($member->trang_thai == 1) ? 'Bình thường' : 'không HĐ')  . " <br>
+                      <b>ghi chú</b>: $member->ghi_chu <br>
+                      <b>Biển số xe</b>: $member->BKS <br>
+                      <b>Bị khóa đến ngày</b>:" . date("d/m/Y h:m:s", $member->thoihan_bikhoa) . " <br>
+                      <br>
+                      <button onclick=\"handle_giaikhoa({$member->member_id} )\"> Giải khóa thành viên này </button>
+                  </div>
+              </div>";
         }
+      }
       ?>
     </tbody>
   </table>
@@ -102,6 +155,41 @@ function searchTable() {
       }
     }
   }
+}
+
+/** xử lý sự kiện giải khóa thành viên */
+function handle_giaikhoa(member_id) {
+  let is_forced = true;
+  let form_datas = new FormData();
+  form_datas.append("member_id", member_id);
+  form_datas.append("is_forced", is_forced);
+
+  fetch("controllers/giai_khoa.php", {
+      method: "POST",
+      body: form_datas
+    }).then(res => res.text())
+    .then(res => {
+      alert("GIải khóa thành công cho thành viên " + member_id);
+      window.location.assign("http://" + window.location.host + "/quanly_kich.php");
+    })
+}
+
+// Xử lý Modals khi người dùng click vào một row trong bảng
+// Get the modal
+let modals = document.getElementsByClassName("myModal");
+// Get the button that opens the modal
+let rows = document.querySelectorAll("tr.row");
+for (let i = 0; i < rows.length; i++) {
+  // When the user clicks on the button, open the modal 
+  rows[i].onclick = function() {
+    modals[i].style.display = "block";
+  };
+  // When the user clicks anywhere outside of the modal, close it
+  modals[i].onclick = function(event) {
+    if (event.target === modals[i]) {
+      modals[i].style.display = "none";
+    }
+  };
 }
 </script>
 

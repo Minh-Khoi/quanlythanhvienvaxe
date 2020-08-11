@@ -57,7 +57,7 @@ session_start();
     <label for="xe_va_thanhvien">Quản lý xe và thành viên</label>
     <input type="submit" value="GO" id="xe_va_thanhvien">
   </form>
-  <form action="" method="post">
+  <form action="quanly_kich.php" method="post">
     <label for="kich">Quản lý Kích (Khóa)</label>
     <input type="submit" value="GO" id="kich">
   </form>
@@ -121,6 +121,7 @@ session_start();
         echo "</tr>";
 
         echo "<!-- The Modal -->
+        
               <div  class='modal myModal'>
                   <!-- Modal content -->
                   <div class='modal-content'>
@@ -139,17 +140,17 @@ session_start();
                         <input type="text" > <button onclick="handle_hoandoi( '
           . $member->member_id . ',0)">OK</button> <br>
                         <button onclick="handle_hoandoi(' . $member->member_id . ','
-          . (($member->member_id != 0) ? (intval($member->member_id) - 2) : 0)
+          . (($member->member_id != 1) ? (intval($member->member_id) - 1) : 0)
           . ')"> Lên trên </button>  
                         <button onclick="handle_hoandoi(' . $member->member_id . ','
-          . (($member->member_id != count($_SESSION["list_member"])) ? (intval($member->member_id)) : 0)
+          . (($member->member_id != count($_SESSION["list_member"])) ? (intval($member->member_id) + 1) : 0)
           . ')"> xuống dưới </button>    
                       </div> <br>' .
           // vùng ngày để form "KHÓA thành viên"
           '
                       <button onclick="show_field_khoathanhvien(' . $member->member_id . ')">KHÓA thành viên này</button>
                       <div style="display:none" class="khoa_chothanhvien' . $member->member_id . '">
-                        <input type="text" 
+                        <input type="number" 
                             class="thoigian_khoathanhvien' . $member->member_id . '" placeholder="Khóa bao lâu">
                         <select class="donvi_thoigian_khoathanhvien' . $member->member_id . '">
                           <option value="hour">giờ</option>
@@ -176,7 +177,7 @@ function logout() {
       window.location.assign("http://" + window.location.host);
     })
 }
-
+console.log("what happen??");
 /** Hiển thị text field và button cho chức năng hoán đổi vị trí */
 function show_field_hoandoi(id_thanhvien) {
   if (document.querySelector(".hoandoi_chothanhvien" + id_thanhvien).style.display == "none") {
@@ -215,13 +216,14 @@ function handle_hoandoi(id_bandau, id_moi) {
     let form_datas = new FormData();
     form_datas.append("id_bandau_send", id_bandau_send);
     form_datas.append("id_moi_send", id_moi_send);
+    // console.log(id_moi_send);
     fetch("controllers/hoan_doi.php", {
         method: "POST",
         body: form_datas
       }).then(res => res.text())
       .then(res => {
         if (res.length == 0) {
-          alert("Hoán đổi thành công");
+          alert("Hoán đổi thành công" + res);
         } else {
           alert(res);
         }
@@ -231,17 +233,26 @@ function handle_hoandoi(id_bandau, id_moi) {
 }
 
 /** Call API handle_hoandoi để khóa 01 thành viên */
-function handle_khoathanhvien(int id_thanhvien) {
-  let thoigian_khoathanhvien = document.querySelector(".thoigian_khoathanhvien" + id_thanhvien);
-  let donvi_thoigian_khoathanhvien = document.querySelector(".donvi_thoigian_khoathanhvien" + id_thanhvien);
+function handle_khoathanhvien(id_thanhvien) {
+  let thoigian_khoathanhvien = document.querySelector(".thoigian_khoathanhvien" + id_thanhvien).value;
+  let donvi_thoigian_khoathanhvien = document.querySelector(".donvi_thoigian_khoathanhvien" + id_thanhvien).value;
 
   let form_datas = new FormData();
+  form_datas.append("id_thanhvien", id_thanhvien);
   form_datas.append("thoigian_khoathanhvien", thoigian_khoathanhvien);
   form_datas.append("donvi_thoigian_khoathanhvien", donvi_thoigian_khoathanhvien);
   fetch("controllers/khoa_chothanhvien.php", {
-    method: "POST",
-    body: form_datas
-  }).then(res => res.text())
+      method: "POST",
+      body: form_datas
+    }).then(res => res.text())
+    .then(res => {
+      if (res.length == 0) {
+        alert("Khóa thành công " + res);
+      } else {
+        alert(res);
+      }
+      window.location.assign("http://" + window.location.host + "/controllers/load_memberlist.php");
+    })
 
 }
 

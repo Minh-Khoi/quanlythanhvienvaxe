@@ -54,7 +54,7 @@ if (!isset($_SESSION["is_quantrivien"])) {
     <label for="xe_va_thanhvien">Quản lý xe và thành viên</label>
     <input type="submit" value="GO" id="xe_va_thanhvien">
   </form>
-  <form action="" method="post">
+  <form action="quanly_kich.php" method="post">
     <label for="kich">Quản lý Kích (Khóa)</label>
     <input type="submit" value="GO" id="kich">
   </form>
