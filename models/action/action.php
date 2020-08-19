@@ -136,4 +136,23 @@ class action
     $this->memberDAO->update_by_zalo($member);
     $_SESSION["list_member"] = $this->memberDAO->read_all();
   }
+
+  /** save link ảnh vào database (ở trường co_anh) */
+  public function save_link_image(int $id_thanhvien, string $link)
+  {
+    $member = $this->memberDAO->read_by_id($id_thanhvien);
+    // Cộng vào chuỗi co_anh trong CSDL kèm theo dấu ';'
+    $member->co_anh .= $link . ';';
+    // trường hợp số link ảnh nhiều hơn 3, xóa ảnh đầu tiên
+    $array_of_links = $member->get_array_of_link_anh();
+    while (count($array_of_links) - 1 > 3) {
+      // Trên thực tế hàm get_array_of_link_anh() luôn có thừa một phần tử rỗng ỏ index cuối cùng
+      $first_link = array_shift($array_of_links);
+      $member->co_anh = implode(';', $array_of_links);
+      unlink(dirname(__FILE__, 3) . '/action' . '/' . $first_link);
+    }
+
+    $this->memberDAO->update_by_zalo($member);
+    $_SESSION["list_member"] = $this->memberDAO->read_all();
+  }
 }

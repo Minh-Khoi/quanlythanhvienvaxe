@@ -79,15 +79,15 @@ session_start();
   <table align="center" border="1" id="myTable">
     <thead>
       <tr>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum.</th>
-        <th>Lorem, </th>
-        <th>Lorem, </th>
+        <th>STT</th>
+        <th>Họ tên</th>
+        <th>Nick Zalo</th>
+        <th>Số điện thoại</th>
+        <th>Trạng thái</th>
+        <th>Biển kiểm soát</th>
+        <th>Ghi chú</th>
+        <th>Có cọc </th>
+        <th>Có ảnh </th>
       </tr>
     </thead>
     <tbody>
@@ -117,51 +117,65 @@ session_start();
         echo "<td>" . $member->BKS . "</td>";
         echo "<td>" . get_shortform_of_ghichu($member->ghi_chu) . "</td>";
         echo "<td>" . (isset($member->co_coc) ? "x" : "") . "</td>";
-        echo "<td>" . (($member->co_anh == 1) ? "x" : "") . "</td>";
+        echo "<td>" . ((strlen($member->co_anh) > 0) ? "x" : "") . "</td>";
         echo "</tr>";
+
+        // Prepare links for images
+        $images =  $member->get_array_of_link_anh();
+        // var_dump($images);
 
         echo "<!-- The Modal -->
         
-              <div  class='modal myModal'>
-                  <!-- Modal content -->
-                  <div class='modal-content'>
-                      <b>Lái xe</b>: $member->ho_ten <br>
-                      <b>số điện thoại</b>: $member->so_dienthoai<br>
-                      <b>trạng thái</b>: " . (($member->trang_thai == 1) ? 'Bình thường' : 'không HĐ')  . " <br>
-                      <b>ghi chú</b>: $member->ghi_chu <br>
-                      <b>Biển số xe</b>: $member->BKS <br>
-                      <b>có cọc</b>: "
+          <div  class='modal myModal'>
+              <!-- Modal content -->
+
+            <div class='modal-content'>
+              <!-- Field of images -->
+              <div class=\"img_fields_for{$member->member_id}\">";
+        for ($i = 0; $i < count($images) - 1; $i++) {
+          echo "<img src=\"{$images[$i]}\" alt=\"ảnh\" style=\"width:50px;height:60px;\" >";
+        }
+        echo  " <br>
+                <input type=\"file\" value=\"Upload ảnh\">
+                <button onclick=\"them_anh({$member->member_id})\">UPLOAD</button>
+              </div> 
+              <b>Lái xe</b>: $member->ho_ten <br>
+                  <b>số điện thoại</b>: $member->so_dienthoai<br>
+                  <b>trạng thái</b>: " . (($member->trang_thai == 1) ? 'Bình thường' : 'không HĐ')  . " <br>
+                  <b>ghi chú</b>: $member->ghi_chu <br>
+                  <b>Biển số xe</b>: $member->BKS <br>
+                  <b>có cọc</b>: "
           . ((isset($member->co_coc) && is_numeric($member->co_coc)) ? 'có' : 'không') . '<br>
-          '
+            '
           // Vùng này để form hoán đổi
           . '
-                      <button onclick="show_field_hoandoi(' . $member->member_id . ')">Hoán đổi đến vị trí số</button>
-                      <div style="display:none" class="hoandoi_chothanhvien' . $member->member_id . '">
-                        <input type="text" > <button onclick="handle_hoandoi( '
+                <button onclick="show_field_hoandoi(' . $member->member_id . ')">Hoán đổi đến vị trí số</button>
+                <div style="display:none" class="hoandoi_chothanhvien' . $member->member_id . '">
+                  <input type="text" > <button onclick="handle_hoandoi( '
           . $member->member_id . ',0)">OK</button> <br>
-                        <button onclick="handle_hoandoi(' . $member->member_id . ','
+                  <button onclick="handle_hoandoi(' . $member->member_id . ','
           . (($member->member_id != 1) ? (intval($member->member_id) - 1) : 0)
           . ')"> Lên trên </button>  
-                        <button onclick="handle_hoandoi(' . $member->member_id . ','
+                  <button onclick="handle_hoandoi(' . $member->member_id . ','
           . (($member->member_id != count($_SESSION["list_member"])) ? (intval($member->member_id) + 1) : 0)
           . ')"> xuống dưới </button>    
-                      </div> <br>' .
+                </div> <br>' .
           // vùng ngày để form "KHÓA thành viên"
           '
-                      <button onclick="show_field_khoathanhvien(' . $member->member_id . ')">KHÓA thành viên này</button>
-                      <div style="display:none" class="khoa_chothanhvien' . $member->member_id . '">
-                        <input type="number" 
-                            class="thoigian_khoathanhvien' . $member->member_id . '" placeholder="Khóa bao lâu">
-                        <select class="donvi_thoigian_khoathanhvien' . $member->member_id . '">
-                          <option value="hour">giờ</option>
-                          <option value="day">ngày</option>
-                          <option value="month">tháng</option>
-                        </select>
-                        <button onclick="handle_khoathanhvien(' . $member->member_id . ')">OK</button> <br>
-                      </div> <br>
-                  </div>
+              <button onclick="show_field_khoathanhvien(' . $member->member_id . ')">KHÓA thành viên này</button>
+              <div style="display:none" class="khoa_chothanhvien' . $member->member_id . '">
+                <input type="number" 
+                    class="thoigian_khoathanhvien' . $member->member_id . '" placeholder="Khóa bao lâu">
+                <select class="donvi_thoigian_khoathanhvien' . $member->member_id . '">
+                  <option value="hour">giờ</option>
+                  <option value="day">ngày</option>
+                  <option value="month">tháng</option>
+                </select>
+                <button onclick="handle_khoathanhvien(' . $member->member_id . ')">OK</button> <br>
+              </div> <br>
+          </div>
 
-              </div>';
+        </div>';
       }
       ?>
     </tbody>
@@ -177,7 +191,7 @@ function logout() {
       window.location.assign("http://" + window.location.host);
     })
 }
-console.log("what happen??");
+
 /** Hiển thị text field và button cho chức năng hoán đổi vị trí */
 function show_field_hoandoi(id_thanhvien) {
   if (document.querySelector(".hoandoi_chothanhvien" + id_thanhvien).style.display == "none") {
@@ -281,6 +295,26 @@ function searchTable() {
       }
     }
   }
+}
+
+/** Handle feature thêm ảnh cho member */
+function them_anh(id) {
+  let files = document.querySelector(".img_fields_for" + id + " input").files[0];
+  let form_datas = new FormData();
+  form_datas.append("id_thanhvien", id);
+  form_datas.append("files", files);
+  fetch('controllers/them_anh.php', {
+      method: "POST",
+      body: form_datas
+    }).then(res => res.text())
+    .then(res => {
+      if (res == "") {
+        alert("thêm ảnh thành công");
+        window.location.assign("http://" + window.location.host + "/controllers/load_memberlist.php");
+      } else {
+        alert(res);
+      }
+    })
 }
 
 // Xử lý Modals khi người dùng click vào một row trong bảng

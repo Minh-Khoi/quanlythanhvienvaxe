@@ -18,7 +18,7 @@ class member
     string $BKS = null,
     string $ghi_chu = null,
     int $co_coc = null,
-    int $co_anh = null,
+    string $co_anh = null,
     int $thoidiem_bikhoa = null,
     int $thoihan_bikhoa = null
   ) {
@@ -32,7 +32,7 @@ class member
     $this->ghi_chu = (isset($ghi_chu)) ? $ghi_chu : $this->ghi_chu;
     $this->co_coc = (isset($co_coc)) ? $co_coc : $this->co_coc;
     $this->co_anh = (isset($co_anh)) ? $co_anh : $this->co_anh;
-    // Riêng với $thoidiem_bikhoa và $thoihan_bikhoa phải có điều kiện với thuộc tính $trang_thai
+    // Riêng với $thoidiem_bikhoa và $thoihan_bikhoa phải có điều kiện tùy thuộc với thuộc tính $trang_thai
     $this->thoidiem_bikhoa = (isset($thoidiem_bikhoa)) ? $thoidiem_bikhoa : $this->thoidiem_bikhoa;
     $this->thoihan_bikhoa = (isset($thoihan_bikhoa)) ? $thoihan_bikhoa : $this->thoihan_bikhoa;
     if ($this->trang_thai == 1) {
@@ -52,7 +52,7 @@ class member
     string $BKS,
     string $ghi_chu,
     int $co_coc,
-    int $co_anh,
+    string $co_anh,
     int $thoidiem_bikhoa,
     int $thoihan_bikhoa
   ): member {
@@ -71,5 +71,13 @@ class member
       $thoihan_bikhoa
     );
     return $instance;
+  }
+
+  /** Function này dùng để bóc tách link ảnh ra từng mảng (lấy từ trường co_anh trong CSDL) */
+  public function get_array_of_link_anh()
+  {
+    $array_of_links = explode(";", $this->co_anh);
+    // var_dump($array_of_links);
+    return $array_of_links;
   }
 }

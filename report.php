@@ -29,10 +29,10 @@ if (!isset($_SESSION["is_quantrivien"])) {
   <table align="center" border="1">
     <thead>
       <tr>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
-        <th>Lorem, ipsum dolor.</th>
+        <th>STT</th>
+        <th>Họ tên</th>
+        <th>Nick Zalo</th>
+        <th>Số điểm</th>
       </tr>
     </thead>
     <tbody>
@@ -62,14 +62,14 @@ if (!isset($_SESSION["is_quantrivien"])) {
   </form>
 </body>
 <script>
-function logout() {
-  // console.log(window.location.host);
-  fetch('controllers/logout_controller.php').then(res => res.text())
-    .then(res => {
-      console.log(res);
-      window.location.assign("http://" + window.location.host);
-    })
-}
+  function logout() {
+    // console.log(window.location.host);
+    fetch('controllers/logout_controller.php').then(res => res.text())
+      .then(res => {
+        console.log(res);
+        window.location.assign("http://" + window.location.host);
+      })
+  }
 </script>
 
 </html>
